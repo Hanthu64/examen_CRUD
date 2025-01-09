@@ -2,7 +2,11 @@
 <%@ page import="org.iesvdm.examen_crud.dao.ClienteDAO" %>
 <%@ page import="org.iesvdm.examen_crud.model.Cliente" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %><%--
+<%@ page import="java.util.Iterator" %>
+<%@ page import="org.iesvdm.examen_crud.dao.ComercialDAO" %>
+<%@ page import="org.iesvdm.examen_crud.dao.ComercialDAOImpl" %>
+<%@ page import="org.iesvdm.examen_crud.model.Comercial" %>
+<%@ page import="java.sql.Date" %><%--
   Created by IntelliJ IDEA.
   User: administrador
   Date: 13/12/24
@@ -18,6 +22,11 @@
 <%
   ClienteDAO clienteDAO = new ClienteDAOImpl();
   List<Cliente> listaClientes = clienteDAO.getAll();
+  Cliente cli;
+
+  ComercialDAO comercialDAO = new ComercialDAOImpl();
+  List<Comercial> listaComercial = comercialDAO.getAll();
+  Comercial co;
 %>
   <h4>Ingrese los datos de su pedido:</h4>
   <form method="post" action="GrabarPedidosServlet">
@@ -26,15 +35,24 @@
     Cliente <select name="selectCliente">
     <%
       Iterator i = listaClientes.iterator();
-      if(i.hasNext()){
-        Cliente c = (Cliente)i.next();
+      while(i.hasNext()){
+        cli = (Cliente)i.next();
         %>
-        <option value="<%= c.getId()%>"><%=c.getNombre()%></option>
+        <option value="<%= cli.getId()%>"><%=cli.getNombre()%></option>
         <%
       }
     %></select><br>
-    Comercial <input type="text" name="idComercial"/></br>
-    <button type="submit" value="Aceptar"></button>
+    Comercial <select name="selectComercial">
+    <%
+      Iterator j = listaComercial.iterator();
+      while(j.hasNext()){
+        co = (Comercial)j.next();
+    %>
+    <option value="<%= co.getId()%>"><%=co.getNombre()%></option>
+    <%
+      }
+    %></select><br>
+    <button type="submit" value="Aceptar">Solicitar pedido</button>
   </form>
 
   <%
